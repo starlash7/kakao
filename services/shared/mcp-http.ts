@@ -22,9 +22,12 @@ export function startMcpHttpServer(options: StartOptions) {
   app.use(express.json());
   app.use(cors({ origin: "*", exposedHeaders: ["Mcp-Session-Id"] }));
 
-  app.get("/health", (_req, res) => {
+  const health = (_req: Request, res: Response) => {
     res.json({ ok: true, service: options.serviceName });
-  });
+  };
+
+  app.get("/", health);
+  app.get("/health", health);
 
   app.post("/mcp", async (req, res) => {
     await handleMcpPost(req, res, transports, options.createServer);
@@ -38,7 +41,7 @@ export function startMcpHttpServer(options: StartOptions) {
     await handleSessionRequest(req, res, transports, "Invalid or missing session ID");
   });
 
-  app.listen(port, () => {
+  app.listen(port, "0.0.0.0", () => {
     console.log(`${options.serviceName} MCP server listening on ${port}`);
   });
 }
