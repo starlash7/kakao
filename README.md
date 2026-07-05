@@ -39,7 +39,7 @@ PAT: 비워둠
 
 | 서비스 | 서버 이름 | Dockerfile |
 | --- | --- | --- |
-| 연차 마법사 | `annual-leave-mcp` | `Dockerfile.annual-leave` |
+| 연차 마법사 | `annual-leave-mcp` | `Dockerfile` 또는 `Dockerfile.annual-leave` |
 | 우리 아이 학교 | `school-life-mcp` | `Dockerfile.school` |
 
 학교 MCP는 서버 설정에서 아래 환경변수를 추가해야 실제 NEIS 조회가 됩니다.
