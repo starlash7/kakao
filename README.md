@@ -46,10 +46,10 @@ PAT: 비워둠
 
 ```text
 연차 마법사: https://annual-leave-mcp-v5.playmcp-endpoint.kakaocloud.io/mcp
-우리 아이 학교: https://school-life-mcp.playmcp-endpoint.kakaocloud.io/mcp
+우리 아이 학교: https://school-life-mcp-v2.playmcp-endpoint.kakaocloud.io/mcp
 ```
 
-학교 MCP는 서버 설정에서 아래 환경변수를 추가해야 실제 NEIS 조회가 됩니다.
+학교 MCP는 NEIS 인증키 없이도 기본 조회가 됩니다. 더 안정적인 운영이 필요하면 서버 설정에서 아래 환경변수를 추가할 수 있습니다.
 
 ```text
 NEIS_API_KEY=발급받은_나이스_API키
@@ -101,7 +101,13 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 | MCP 이름 | `연차 마법사` | `우리 아이 학교` |
 | MCP 식별자 | `leaveWizard` | `schoolLife` |
 | 인증 방식 | 인증 사용하지 않음 | 인증 사용하지 않음 |
-| MCP Endpoint | `https://annual-leave-mcp-v5.playmcp-endpoint.kakaocloud.io/mcp` | `https://school-life-mcp.playmcp-endpoint.kakaocloud.io/mcp` |
+| MCP Endpoint | `https://annual-leave-mcp-v5.playmcp-endpoint.kakaocloud.io/mcp` | `https://school-life-mcp-v2.playmcp-endpoint.kakaocloud.io/mcp` |
+
+현재 상태:
+
+- `연차 마법사`: PlayMCP 임시 등록, tool call 테스트 성공, 심사 요청 완료
+- `우리 아이 학교`: PlayMCP 임시 등록, tool call 테스트 성공, 심사 요청 완료
+- 심사 승인 후 공개 상태를 `전체 공개`로 변경하고 비즈니스폼을 제출해야 합니다.
 
 설명:
 
