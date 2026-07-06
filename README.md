@@ -42,6 +42,13 @@ PAT: 비워둠
 | 연차 마법사 | `annual-leave-mcp` | `Dockerfile` 또는 `Dockerfile.annual-leave` |
 | 우리 아이 학교 | `school-life-mcp` | `Dockerfile.school` |
 
+현재 배포된 MCP Endpoint:
+
+```text
+연차 마법사: https://annual-leave-mcp-v5.playmcp-endpoint.kakaocloud.io/mcp
+우리 아이 학교: https://school-life-mcp.playmcp-endpoint.kakaocloud.io/mcp
+```
+
 학교 MCP는 서버 설정에서 아래 환경변수를 추가해야 실제 NEIS 조회가 됩니다.
 
 ```text
@@ -86,6 +93,27 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 
 - `연차 마법사`
 - `우리 아이 학교`
+
+등록 입력값:
+
+| 항목 | 연차 마법사 | 우리 아이 학교 |
+| --- | --- | --- |
+| MCP 이름 | `연차 마법사` | `우리 아이 학교` |
+| MCP 식별자 | `leaveWizard` | `schoolLife` |
+| 인증 방식 | 인증 사용하지 않음 | 인증 사용하지 않음 |
+| MCP Endpoint | `https://annual-leave-mcp-v5.playmcp-endpoint.kakaocloud.io/mcp` | `https://school-life-mcp.playmcp-endpoint.kakaocloud.io/mcp` |
+
+설명:
+
+```text
+연차 마법사
+남은 연차와 공휴일을 조합해 가장 긴 연휴를 찾아주는 생활형 MCP입니다. 주말, 공휴일, 대체공휴일을 계산해 언제 연차를 쓰면 며칠 쉴 수 있는지 알려줍니다.
+```
+
+```text
+우리 아이 학교
+나이스 교육정보를 기반으로 학교 급식, 학사일정, 시간표를 조회하는 생활형 MCP입니다. 학교명으로 학교코드를 찾고 오늘 급식, 시험 일정, 학년·반 시간표를 확인할 수 있습니다.
+```
 
 스타터 질문:
 
