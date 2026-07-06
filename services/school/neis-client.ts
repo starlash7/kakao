@@ -111,12 +111,11 @@ export function hasNeisKey() {
 
 async function fetchNeisRows(endpoint: string, params: NeisParams) {
   const key = process.env.NEIS_API_KEY;
-  if (!key) {
-    throw new Error("NEIS_API_KEY_REQUIRED");
-  }
 
   const url = new URL(`${BASE_URL}/${endpoint}`);
-  url.searchParams.set("KEY", key);
+  if (key) {
+    url.searchParams.set("KEY", key);
+  }
   url.searchParams.set("Type", "json");
   url.searchParams.set("pIndex", "1");
 

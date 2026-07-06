@@ -4,8 +4,6 @@ import { randomUUID } from "node:crypto";
 const PORT = Number(process.env.PORT ?? 3000);
 const HOST = process.env.HOST ?? "0.0.0.0";
 const BASE_URL = "https://open.neis.go.kr/hub";
-const NEIS_KEY_MESSAGE =
-  "NEIS_API_KEY 환경변수가 설정되지 않았습니다. 카카오클라우드 배포 설정에 나이스 Open API 인증키를 추가해주세요.";
 
 const tools = [
   {
@@ -206,10 +204,9 @@ async function getTimetable(officeCode, schoolCode, schoolType, grade, className
 
 async function fetchNeisRows(endpoint, params) {
   const key = process.env.NEIS_API_KEY;
-  if (!key) throw new Error("NEIS_API_KEY_REQUIRED");
 
   const url = new URL(`${BASE_URL}/${endpoint}`);
-  url.searchParams.set("KEY", key);
+  if (key) url.searchParams.set("KEY", key);
   url.searchParams.set("Type", "json");
   url.searchParams.set("pIndex", "1");
   for (const [name, item] of Object.entries(params)) {
@@ -262,7 +259,6 @@ function formatTimetable(items, date, grade, className) {
 }
 
 function formatNeisError(error) {
-  if (error instanceof Error && error.message === "NEIS_API_KEY_REQUIRED") return NEIS_KEY_MESSAGE;
   return "나이스 서버 응답을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.";
 }
 
