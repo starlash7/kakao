@@ -8,8 +8,15 @@ const BASE_URL = "https://open.neis.go.kr/hub";
 const tools = [
   {
     name: "search_school",
+    annotations: {
+      title: "우리 아이 학교 학교 검색",
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: true,
+    },
     description:
-      "학교 이름으로 학교코드와 교육청코드를 찾습니다. 다른 학교 도구를 쓰기 전에 먼저 호출하세요. 예: '서울대치초등학교 찾아줘', '대치초 서울 학교코드 알려줘'",
+      "우리 아이 학교 서비스는 학교 이름으로 학교코드와 교육청코드를 찾습니다. 다른 학교 도구를 쓰기 전에 먼저 호출하세요. 예: '서울대치초등학교 찾아줘', '대치초 서울 학교코드 알려줘'",
     inputSchema: {
       type: "object",
       properties: { school_name: { type: "string" }, region: { type: "string" } },
@@ -18,7 +25,14 @@ const tools = [
   },
   {
     name: "get_meal",
-    description: "특정 학교의 급식 메뉴를 조회합니다. 예: '오늘 서울대치초 급식 뭐야?', '내일 점심 메뉴 알려줘' 날짜는 YYYY-MM-DD 형식입니다.",
+    annotations: {
+      title: "우리 아이 학교 급식 조회",
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: true,
+    },
+    description: "우리 아이 학교 서비스는 특정 학교의 급식 메뉴를 조회합니다. 예: '오늘 서울대치초 급식 뭐야?', '내일 점심 메뉴 알려줘' 날짜는 YYYY-MM-DD 형식입니다.",
     inputSchema: {
       type: "object",
       properties: { office_code: { type: "string" }, school_code: { type: "string" }, date: { type: "string" } },
@@ -27,7 +41,14 @@ const tools = [
   },
   {
     name: "get_school_schedule",
-    description: "시험, 방학, 개학, 재량휴업일 같은 학사일정을 조회합니다. 예: '중간고사 언제야?', '여름방학 일정 알려줘'",
+    annotations: {
+      title: "우리 아이 학교 학사일정 조회",
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: true,
+    },
+    description: "우리 아이 학교 서비스는 시험, 방학, 개학, 재량휴업일 같은 학사일정을 조회합니다. 예: '중간고사 언제야?', '여름방학 일정 알려줘'",
     inputSchema: {
       type: "object",
       properties: {
@@ -42,7 +63,14 @@ const tools = [
   },
   {
     name: "get_timetable",
-    description: "학년/반 시간표를 조회합니다. 예: '내일 3학년 2반 시간표 알려줘', '오늘 무슨 과목 있어?' 날짜는 YYYY-MM-DD 형식입니다.",
+    annotations: {
+      title: "우리 아이 학교 시간표 조회",
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: true,
+    },
+    description: "우리 아이 학교 서비스는 학년/반 시간표를 조회합니다. 예: '내일 3학년 2반 시간표 알려줘', '오늘 무슨 과목 있어?' 날짜는 YYYY-MM-DD 형식입니다.",
     inputSchema: {
       type: "object",
       properties: {

@@ -34,8 +34,15 @@ const holidayMap = new Map(holidays);
 const tools = [
   {
     name: "find_golden_holidays",
+    annotations: {
+      title: "연차 마법사 최장 연휴 계산",
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
     description:
-      "연차 개수로 공휴일·주말을 이어 최장 연휴를 찾습니다. 예: '올해 남은 연차 3개로 최장 연휴', '10월에 연차 3개 쓰면 최대 며칠 쉬어?'",
+      "연차 마법사 서비스는 연차 개수로 공휴일·주말을 이어 최장 연휴를 찾습니다. 예: '올해 남은 연차 3개로 최장 연휴', '10월에 연차 3개 쓰면 최대 며칠 쉬어?'",
     inputSchema: {
       type: "object",
       properties: {
@@ -50,7 +57,14 @@ const tools = [
   },
   {
     name: "get_holidays",
-    description: "특정 기간의 한국 공휴일과 대체공휴일을 알려줍니다. 예: '10월 공휴일 알려줘', '올해 남은 빨간날 뭐 있어?'",
+    annotations: {
+      title: "연차 마법사 공휴일 조회",
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
+    description: "연차 마법사 서비스는 특정 기간의 한국 공휴일과 대체공휴일을 알려줍니다. 예: '10월 공휴일 알려줘', '올해 남은 빨간날 뭐 있어?'",
     inputSchema: {
       type: "object",
       properties: {
@@ -63,7 +77,14 @@ const tools = [
   },
   {
     name: "check_leave_plan",
-    description: "특정 날짜에 연차를 쓰면 실제로 며칠 연속 쉬는지 계산합니다. 예: '10월 6,7,8일 연차 쓰면 며칠 쉬어?'",
+    annotations: {
+      title: "연차 마법사 연차 사용일 확인",
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
+    description: "연차 마법사 서비스는 특정 날짜에 연차를 쓰면 실제로 며칠 연속 쉬는지 계산합니다. 예: '10월 6,7,8일 연차 쓰면 며칠 쉬어?'",
     inputSchema: {
       type: "object",
       properties: { dates: { type: "array", minItems: 1, items: { type: "string" } } },
