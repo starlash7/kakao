@@ -17,13 +17,13 @@ npm run start:school
 
 ## Environment
 
-학교 MCP는 배포 환경에 나이스 인증키가 필요합니다.
+학교 MCP는 NEIS 공개 조회를 기본으로 사용합니다. 더 안정적인 운영이 필요하면 배포 환경에 나이스 인증키를 설정할 수 있습니다.
 
 ```bash
 NEIS_API_KEY=...
 ```
 
-키가 없으면 도구 호출은 실패하지 않고 환경변수 설정 안내를 반환합니다.
+키가 없으면 `KEY` 파라미터 없이 NEIS API를 호출합니다.
 
 ## KakaoCloud
 
@@ -39,14 +39,14 @@ PAT: 비워둠
 
 | 서비스 | 서버 이름 | Dockerfile |
 | --- | --- | --- |
-| 연차 마법사 | `annual-leave-mcp` | `Dockerfile` 또는 `Dockerfile.annual-leave` |
-| 우리 아이 학교 | `school-life-mcp` | `Dockerfile.school` |
+| 연차 마법사 | `annual-leave-mcp-v6` | `Dockerfile` 또는 `Dockerfile.annual-leave` |
+| 우리 아이 학교 | `school-life-mcp-v3` | `Dockerfile.school` |
 
 현재 배포된 MCP Endpoint:
 
 ```text
-연차 마법사: https://annual-leave-mcp-v5.playmcp-endpoint.kakaocloud.io/mcp
-우리 아이 학교: https://school-life-mcp-v2.playmcp-endpoint.kakaocloud.io/mcp
+연차 마법사: https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp
+우리 아이 학교: https://school-life-mcp-v3.playmcp-endpoint.kakaocloud.io/mcp
 ```
 
 학교 MCP는 NEIS 인증키 없이도 기본 조회가 됩니다. 더 안정적인 운영이 필요하면 서버 설정에서 아래 환경변수를 추가할 수 있습니다.
@@ -101,13 +101,19 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 | MCP 이름 | `연차 마법사` | `우리 아이 학교` |
 | MCP 식별자 | `leaveWizard` | `schoolLife` |
 | 인증 방식 | 인증 사용하지 않음 | 인증 사용하지 않음 |
-| MCP Endpoint | `https://annual-leave-mcp-v5.playmcp-endpoint.kakaocloud.io/mcp` | `https://school-life-mcp-v2.playmcp-endpoint.kakaocloud.io/mcp` |
+| MCP Endpoint | `https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp` | `https://school-life-mcp-v3.playmcp-endpoint.kakaocloud.io/mcp` |
 
 현재 상태:
 
-- `연차 마법사`: PlayMCP 임시 등록, tool call 테스트 성공, 심사 요청 완료
-- `우리 아이 학교`: PlayMCP 임시 등록, tool call 테스트 성공, 심사 요청 완료
+- `연차 마법사`: KakaoCloud `annual-leave-mcp-v6` Active, PlayMCP tool call 테스트 성공
+- `우리 아이 학교`: KakaoCloud `school-life-mcp-v3` Active, PlayMCP tool call 테스트 성공
+- 반려 사유였던 tool `annotations`와 description 내 서비스명 포함 여부는 새 endpoint의 `tools/list` 응답으로 확인했습니다.
 - 심사 승인 후 공개 상태를 `전체 공개`로 변경하고 비즈니스폼을 제출해야 합니다.
+
+검증한 PlayMCP 질문:
+
+- `2026년 10월 6일, 7일, 8일에 연차 쓰면 며칠 연속 쉬어?`
+- `한영외고 오늘 급식메뉴 알려줘`
 
 설명:
 
