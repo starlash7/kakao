@@ -46,11 +46,11 @@ const tools = [
     inputSchema: {
       type: "object",
       properties: {
-        leave_days: { type: "integer", minimum: 0, maximum: 30 },
-        year: { type: "integer" },
-        month: { type: "integer", minimum: 1, maximum: 12 },
-        from: { type: "string" },
-        to: { type: "string" },
+        leave_days: { type: "integer", minimum: 0, maximum: 30, description: "사용 가능한 연차 개수" },
+        year: { type: "integer", description: "조회할 연도. 예: 2026" },
+        month: { type: "integer", minimum: 1, maximum: 12, description: "조회할 월. 예: 10" },
+        from: { type: "string", description: "조회 시작일. YYYY-MM-DD 형식" },
+        to: { type: "string", description: "조회 종료일. YYYY-MM-DD 형식" },
       },
       required: ["leave_days"],
     },
@@ -68,10 +68,10 @@ const tools = [
     inputSchema: {
       type: "object",
       properties: {
-        year: { type: "integer" },
-        month: { type: "integer", minimum: 1, maximum: 12 },
-        from: { type: "string" },
-        to: { type: "string" },
+        year: { type: "integer", description: "조회할 연도. 예: 2026" },
+        month: { type: "integer", minimum: 1, maximum: 12, description: "조회할 월. 예: 10" },
+        from: { type: "string", description: "조회 시작일. YYYY-MM-DD 형식" },
+        to: { type: "string", description: "조회 종료일. YYYY-MM-DD 형식" },
       },
     },
   },
@@ -87,7 +87,14 @@ const tools = [
     description: "연차 마법사 서비스는 특정 날짜에 연차를 쓰면 실제로 며칠 연속 쉬는지 계산합니다. 예: '10월 6,7,8일 연차 쓰면 며칠 쉬어?'",
     inputSchema: {
       type: "object",
-      properties: { dates: { type: "array", minItems: 1, items: { type: "string" } } },
+      properties: {
+        dates: {
+          type: "array",
+          minItems: 1,
+          description: "연차를 사용할 날짜 목록. 각 값은 YYYY-MM-DD 형식",
+          items: { type: "string", description: "연차 사용일. YYYY-MM-DD 형식" },
+        },
+      },
       required: ["dates"],
     },
   },

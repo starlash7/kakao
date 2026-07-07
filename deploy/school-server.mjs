@@ -19,7 +19,10 @@ const tools = [
       "우리 아이 학교 서비스는 학교 이름으로 학교코드와 교육청코드를 찾습니다. 다른 학교 도구를 쓰기 전에 먼저 호출하세요. 예: '서울대치초등학교 찾아줘', '대치초 서울 학교코드 알려줘'",
     inputSchema: {
       type: "object",
-      properties: { school_name: { type: "string" }, region: { type: "string" } },
+      properties: {
+        school_name: { type: "string", description: "검색할 학교 이름. 예: 서울대치초등학교" },
+        region: { type: "string", description: "선택 지역명. 예: 서울특별시" },
+      },
       required: ["school_name"],
     },
   },
@@ -35,7 +38,11 @@ const tools = [
     description: "우리 아이 학교 서비스는 특정 학교의 급식 메뉴를 조회합니다. 예: '오늘 서울대치초 급식 뭐야?', '내일 점심 메뉴 알려줘' 날짜는 YYYY-MM-DD 형식입니다.",
     inputSchema: {
       type: "object",
-      properties: { office_code: { type: "string" }, school_code: { type: "string" }, date: { type: "string" } },
+      properties: {
+        office_code: { type: "string", description: "NEIS 교육청코드. 예: B10" },
+        school_code: { type: "string", description: "NEIS 학교코드. 예: 7091380" },
+        date: { type: "string", description: "급식 조회 날짜. YYYY-MM-DD 형식" },
+      },
       required: ["office_code", "school_code"],
     },
   },
@@ -52,11 +59,11 @@ const tools = [
     inputSchema: {
       type: "object",
       properties: {
-        office_code: { type: "string" },
-        school_code: { type: "string" },
-        from: { type: "string" },
-        to: { type: "string" },
-        keyword: { type: "string" },
+        office_code: { type: "string", description: "NEIS 교육청코드. 예: B10" },
+        school_code: { type: "string", description: "NEIS 학교코드. 예: 7091380" },
+        from: { type: "string", description: "학사일정 조회 시작일. YYYY-MM-DD 형식" },
+        to: { type: "string", description: "학사일정 조회 종료일. YYYY-MM-DD 형식" },
+        keyword: { type: "string", description: "필터링할 일정 키워드. 예: 방학, 시험" },
       },
       required: ["office_code", "school_code"],
     },
@@ -74,12 +81,12 @@ const tools = [
     inputSchema: {
       type: "object",
       properties: {
-        office_code: { type: "string" },
-        school_code: { type: "string" },
-        school_type: { type: "string" },
-        grade: { type: "string" },
-        class_name: { type: "string" },
-        date: { type: "string" },
+        office_code: { type: "string", description: "NEIS 교육청코드. 예: B10" },
+        school_code: { type: "string", description: "NEIS 학교코드. 예: 7091380" },
+        school_type: { type: "string", description: "학교급. 초, 중, 고 또는 elementary/middle/high" },
+        grade: { type: "string", description: "학년. 예: 3" },
+        class_name: { type: "string", description: "반. 예: 2" },
+        date: { type: "string", description: "시간표 조회 날짜. YYYY-MM-DD 형식" },
       },
       required: ["office_code", "school_code", "school_type", "grade", "class_name"],
     },
