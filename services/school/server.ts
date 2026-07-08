@@ -20,7 +20,7 @@ export function createSchoolServer() {
 
   server.tool(
     "search_school",
-    "학교 이름으로 학교코드와 교육청코드를 찾습니다. 다른 학교 도구를 쓰기 전에 먼저 호출하세요. 예: '서울대치초등학교 찾아줘', '대치초 서울 학교코드 알려줘'",
+    "학교 이름으로 학교코드와 교육청코드를 찾습니다. 다른 학교 도구를 쓰기 전에 먼저 호출하세요. 예: '서울대치초등학교 찾아줘', '대치초 서울특별시 학교코드 알려줘'",
     { school_name: z.string(), region: z.string().optional() },
     async ({ school_name, region }) => handleTool(async () => formatSchools(await searchSchool(school_name, region))),
   );
@@ -60,7 +60,7 @@ export function createSchoolServer() {
 
   server.tool(
     "get_timetable",
-    "학년/반 시간표를 조회합니다. 예: '내일 3학년 2반 시간표 알려줘', '오늘 무슨 과목 있어?' 날짜는 YYYY-MM-DD 형식입니다.",
+    "학년/반 시간표를 조회합니다. 학교명이나 학교코드가 없으면 먼저 학교를 확인하세요. 예: '서울대치초등학교 내일 3학년 2반 시간표 알려줘' 날짜는 YYYY-MM-DD 형식입니다.",
     {
       office_code: z.string(),
       school_code: z.string(),

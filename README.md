@@ -40,13 +40,13 @@ PAT: 비워둠
 | 서비스 | 서버 이름 | Dockerfile |
 | --- | --- | --- |
 | 연차 마법사 | `annual-leave-mcp-v6` | `Dockerfile` 또는 `Dockerfile.annual-leave` |
-| 우리 아이 학교 | `school-life-mcp-v3` | `Dockerfile.school` |
+| 우리 아이 학교 | `school-life-mcp-v4` | `Dockerfile.school` |
 
 현재 배포된 MCP Endpoint:
 
 ```text
 연차 마법사: https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp
-우리 아이 학교: https://school-life-mcp-v3.playmcp-endpoint.kakaocloud.io/mcp
+우리 아이 학교: https://school-life-mcp-v4.playmcp-endpoint.kakaocloud.io/mcp
 ```
 
 학교 MCP는 NEIS 인증키 없이도 기본 조회가 됩니다. 더 안정적인 운영이 필요하면 서버 설정에서 아래 환경변수를 추가할 수 있습니다.
@@ -101,19 +101,20 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 | MCP 이름 | `연차 마법사` | `우리 아이 학교` |
 | MCP 식별자 | `leaveWizard` | `schoolLife` |
 | 인증 방식 | 인증 사용하지 않음 | 인증 사용하지 않음 |
-| MCP Endpoint | `https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp` | `https://school-life-mcp-v3.playmcp-endpoint.kakaocloud.io/mcp` |
+| MCP Endpoint | `https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp` | `https://school-life-mcp-v4.playmcp-endpoint.kakaocloud.io/mcp` |
 
 현재 상태:
 
 - `연차 마법사`: KakaoCloud `annual-leave-mcp-v6` Active, PlayMCP tool call 테스트 성공
-- `우리 아이 학교`: KakaoCloud `school-life-mcp-v3` Active, PlayMCP tool call 테스트 성공
-- 반려 사유였던 tool `annotations`와 description 내 서비스명 포함 여부는 새 endpoint의 `tools/list` 응답으로 확인했습니다.
+- `우리 아이 학교`: KakaoCloud `school-life-mcp-v4` 심사 중
+- `우리 아이 학교`: 학교명 fallback과 지역명 alias 보정 추가. `school-life-mcp-v4` 재빌드 후 재심사 요청합니다.
+- 반려 사유였던 tool `annotations`, description 내 서비스명 포함 여부, 대화 예시 입력은 `tools/list`/`tools/call` 응답으로 확인합니다.
 - 심사 승인 후 공개 상태를 `전체 공개`로 변경하고 비즈니스폼을 제출해야 합니다.
 
 검증한 PlayMCP 질문:
 
 - `2026년 10월 6일, 7일, 8일에 연차 쓰면 며칠 연속 쉬어?`
-- `한영외고 오늘 급식메뉴 알려줘`
+- `서울대치초등학교 오늘 급식 뭐야?`
 
 설명:
 
@@ -127,12 +128,13 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 나이스 교육정보를 기반으로 학교 급식, 학사일정, 시간표를 조회하는 생활형 MCP입니다. 학교명으로 학교코드를 찾고 오늘 급식, 시험 일정, 학년·반 시간표를 확인할 수 있습니다.
 ```
 
-스타터 질문:
+재심사용 스타터 질문:
 
 - 올해 남은 연차 3개로 최장 연휴 만들어줘
 - 10월에 연차 3개 쓰면 최대 며칠 쉬어?
 - 서울대치초등학교 오늘 급식 뭐야?
-- 내일 3학년 2반 시간표 알려줘
+- 서울대치초등학교 학교코드 찾아줘
+- 서울대치초등학교 내일 3학년 2반 시간표 알려줘
 
 비즈니스폼 소개문:
 

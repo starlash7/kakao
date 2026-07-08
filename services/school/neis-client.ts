@@ -30,23 +30,77 @@ export type TimetableInfo = {
 
 const BASE_URL = "https://open.neis.go.kr/hub";
 const TIMEOUT_MS = 5000;
+const REGION_ALIASES = new Map([
+  ["서울", "서울특별시"],
+  ["서울시", "서울특별시"],
+  ["부산", "부산광역시"],
+  ["부산시", "부산광역시"],
+  ["대구", "대구광역시"],
+  ["대구시", "대구광역시"],
+  ["인천", "인천광역시"],
+  ["인천시", "인천광역시"],
+  ["광주", "광주광역시"],
+  ["광주시", "광주광역시"],
+  ["대전", "대전광역시"],
+  ["대전시", "대전광역시"],
+  ["울산", "울산광역시"],
+  ["울산시", "울산광역시"],
+  ["세종", "세종특별자치시"],
+  ["세종시", "세종특별자치시"],
+  ["경기", "경기도"],
+  ["강원", "강원특별자치도"],
+  ["충북", "충청북도"],
+  ["충남", "충청남도"],
+  ["전북", "전북특별자치도"],
+  ["전남", "전라남도"],
+  ["경북", "경상북도"],
+  ["경남", "경상남도"],
+  ["제주", "제주특별자치도"],
+]);
 
 export async function searchSchool(schoolName: string, region?: string) {
-  const rows = await fetchNeisRows("schoolInfo", {
-    SCHUL_NM: schoolName,
-    LCTN_SC_NM: region,
-    pSize: 5,
-  });
+  const regionName = normalizeRegionName(region);
 
-  return rows.map((row): SchoolInfo => ({
-    officeCode: stringValue(row.ATPT_OFCDC_SC_CODE),
-    officeName: stringValue(row.ATPT_OFCDC_SC_NM),
-    schoolCode: stringValue(row.SD_SCHUL_CODE),
-    schoolName: stringValue(row.SCHUL_NM),
-    schoolType: stringValue(row.SCHUL_KND_SC_NM),
-    region: stringValue(row.LCTN_SC_NM),
-    address: stringValue(row.ORG_RDNMA),
-  }));
+  for (const term of getSchoolSearchTerms(schoolName)) {
+    const rows = await fetchNeisRows("schoolInfo", {
+      SCHUL_NM: term,
+      LCTN_SC_NM: regionName,
+      pSize: 5,
+    });
+
+    if (rows.length > 0) {
+      return rows.map((row): SchoolInfo => ({
+        officeCode: stringValue(row.ATPT_OFCDC_SC_CODE),
+        officeName: stringValue(row.ATPT_OFCDC_SC_NM),
+        schoolCode: stringValue(row.SD_SCHUL_CODE),
+        schoolName: stringValue(row.SCHUL_NM),
+        schoolType: stringValue(row.SCHUL_KND_SC_NM),
+        region: stringValue(row.LCTN_SC_NM),
+        address: stringValue(row.ORG_RDNMA),
+      }));
+    }
+  }
+
+  return [];
+}
+
+export function normalizeRegionName(region?: string) {
+  const trimmed = region?.trim();
+  if (!trimmed) return undefined;
+  return REGION_ALIASES.get(trimmed) ?? trimmed;
+}
+
+export function getSchoolSearchTerms(schoolName: string) {
+  const trimmed = schoolName.trim();
+  if (!trimmed) return [];
+
+  return unique([
+    trimmed,
+    trimmed.replace(/초등학교$/, "초"),
+    trimmed.replace(/중학교$/, "중"),
+    trimmed.replace(/고등학교$/, "고"),
+    trimmed.replace(/외고$/, "외국어고등학교"),
+  ]);
 }
 
 export async function getMeal(officeCode: string, schoolCode: string, date: string) {
@@ -171,4 +225,8 @@ function cleanDishNames(value: string) {
 
 function stringValue(value: unknown) {
   return value === undefined || value === null ? "" : String(value);
+}
+
+function unique(values: string[]) {
+  return [...new Set(values.filter(Boolean))];
 }

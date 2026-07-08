@@ -4,6 +4,33 @@ import { randomUUID } from "node:crypto";
 const PORT = Number(process.env.PORT ?? 3000);
 const HOST = process.env.HOST ?? "0.0.0.0";
 const BASE_URL = "https://open.neis.go.kr/hub";
+const REGION_ALIASES = new Map([
+  ["서울", "서울특별시"],
+  ["서울시", "서울특별시"],
+  ["부산", "부산광역시"],
+  ["부산시", "부산광역시"],
+  ["대구", "대구광역시"],
+  ["대구시", "대구광역시"],
+  ["인천", "인천광역시"],
+  ["인천시", "인천광역시"],
+  ["광주", "광주광역시"],
+  ["광주시", "광주광역시"],
+  ["대전", "대전광역시"],
+  ["대전시", "대전광역시"],
+  ["울산", "울산광역시"],
+  ["울산시", "울산광역시"],
+  ["세종", "세종특별자치시"],
+  ["세종시", "세종특별자치시"],
+  ["경기", "경기도"],
+  ["강원", "강원특별자치도"],
+  ["충북", "충청북도"],
+  ["충남", "충청남도"],
+  ["전북", "전북특별자치도"],
+  ["전남", "전라남도"],
+  ["경북", "경상북도"],
+  ["경남", "경상남도"],
+  ["제주", "제주특별자치도"],
+]);
 
 const tools = [
   {
@@ -16,7 +43,7 @@ const tools = [
       openWorldHint: true,
     },
     description:
-      "우리 아이 학교 서비스는 학교 이름으로 학교코드와 교육청코드를 찾습니다. 다른 학교 도구를 쓰기 전에 먼저 호출하세요. 예: '서울대치초등학교 찾아줘', '대치초 서울 학교코드 알려줘'",
+      "우리 아이 학교 서비스는 학교 이름으로 학교코드와 교육청코드를 찾습니다. 다른 학교 도구를 쓰기 전에 먼저 호출하세요. 예: '서울대치초등학교 찾아줘', '대치초 서울특별시 학교코드 알려줘'",
     inputSchema: {
       type: "object",
       properties: {
@@ -77,7 +104,7 @@ const tools = [
       idempotentHint: true,
       openWorldHint: true,
     },
-    description: "우리 아이 학교 서비스는 학년/반 시간표를 조회합니다. 예: '내일 3학년 2반 시간표 알려줘', '오늘 무슨 과목 있어?' 날짜는 YYYY-MM-DD 형식입니다.",
+    description: "우리 아이 학교 서비스는 학년/반 시간표를 조회합니다. 학교명이나 학교코드가 없으면 먼저 학교를 확인하세요. 예: '서울대치초등학교 내일 3학년 2반 시간표 알려줘' 날짜는 YYYY-MM-DD 형식입니다.",
     inputSchema: {
       type: "object",
       properties: {
@@ -182,16 +209,24 @@ async function callTool(name, args) {
 }
 
 async function searchSchool(schoolName, region) {
-  const rows = await fetchNeisRows("schoolInfo", { SCHUL_NM: schoolName, LCTN_SC_NM: region, pSize: 5 });
-  return rows.map((row) => ({
-    officeCode: value(row.ATPT_OFCDC_SC_CODE),
-    officeName: value(row.ATPT_OFCDC_SC_NM),
-    schoolCode: value(row.SD_SCHUL_CODE),
-    schoolName: value(row.SCHUL_NM),
-    schoolType: value(row.SCHUL_KND_SC_NM),
-    region: value(row.LCTN_SC_NM),
-    address: value(row.ORG_RDNMA),
-  }));
+  const regionName = normalizeRegionName(region);
+
+  for (const term of getSchoolSearchTerms(schoolName)) {
+    const rows = await fetchNeisRows("schoolInfo", { SCHUL_NM: term, LCTN_SC_NM: regionName, pSize: 5 });
+    if (rows.length > 0) {
+      return rows.map((row) => ({
+        officeCode: value(row.ATPT_OFCDC_SC_CODE),
+        officeName: value(row.ATPT_OFCDC_SC_NM),
+        schoolCode: value(row.SD_SCHUL_CODE),
+        schoolName: value(row.SCHUL_NM),
+        schoolType: value(row.SCHUL_KND_SC_NM),
+        region: value(row.LCTN_SC_NM),
+        address: value(row.ORG_RDNMA),
+      }));
+    }
+  }
+
+  return [];
 }
 
 async function getMeal(officeCode, schoolCode, date) {
@@ -297,6 +332,25 @@ function formatNeisError(error) {
   return "나이스 서버 응답을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.";
 }
 
+function normalizeRegionName(region) {
+  const trimmed = region?.trim();
+  if (!trimmed) return undefined;
+  return REGION_ALIASES.get(trimmed) ?? trimmed;
+}
+
+function getSchoolSearchTerms(schoolName) {
+  const trimmed = String(schoolName ?? "").trim();
+  if (!trimmed) return [];
+
+  return unique([
+    trimmed,
+    trimmed.replace(/초등학교$/, "초"),
+    trimmed.replace(/중학교$/, "중"),
+    trimmed.replace(/고등학교$/, "고"),
+    trimmed.replace(/외고$/, "외국어고등학교"),
+  ]);
+}
+
 function getSchedulePeriod(from, to) {
   const start = from ? toYmd(from) : todayYmdKst();
   return { from: start, to: to ? toYmd(to) : toYmd(addDays(toIsoDate(start), 60)) };
@@ -342,6 +396,10 @@ function toYmd(date) {
 
 function value(item) {
   return item === undefined || item === null ? "" : String(item);
+}
+
+function unique(values) {
+  return [...new Set(values.filter(Boolean))];
 }
 
 function readBody(req) {
