@@ -46,7 +46,7 @@ PAT: 비워둠
 
 ```text
 연차 마법사: https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp
-우리 아이 학교: v5 배포 후 Endpoint URL을 입력
+우리 아이 학교: https://school-life-mcp-v5.playmcp-endpoint.kakaocloud.io/mcp
 ```
 
 학교 MCP는 NEIS 인증키 없이도 기본 조회가 됩니다. 더 안정적인 운영이 필요하면 서버 설정에서 아래 환경변수를 추가할 수 있습니다.
@@ -101,12 +101,12 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 | MCP 이름 | `연차 마법사` | `우리 아이 학교` |
 | MCP 식별자 | `leaveWizard` | `schoolLife` |
 | 인증 방식 | 인증 사용하지 않음 | 인증 사용하지 않음 |
-| MCP Endpoint | `https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp` | v5 배포 후 Endpoint URL 입력 |
+| MCP Endpoint | `https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp` | `https://school-life-mcp-v5.playmcp-endpoint.kakaocloud.io/mcp` |
 
 현재 상태:
 
 - `연차 마법사`: KakaoCloud `annual-leave-mcp-v6` Active, PlayMCP tool call 테스트 성공
-- `우리 아이 학교`: `school-life-mcp-v4` 심사 반려. 영어 학교급 매핑과 주말 안내를 보정한 `school-life-mcp-v5`를 배포 후 재심사합니다.
+- `우리 아이 학교`: `school-life-mcp-v4` 반려 사유를 보정한 `school-life-mcp-v5` Active, PlayMCP 재심사 요청 완료
 - 반려 사유였던 tool `annotations`, description 내 서비스명 포함 여부, 대화 예시 입력은 `tools/list`/`tools/call` 응답으로 확인합니다.
 - 심사 승인 후 공개 상태를 `전체 공개`로 변경하고 비즈니스폼을 제출해야 합니다.
 
