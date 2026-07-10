@@ -60,7 +60,7 @@ export function createSchoolServer() {
 
   server.tool(
     "get_timetable",
-    "학년/반 시간표를 조회합니다. 학교명이나 학교코드가 없으면 먼저 학교를 확인하세요. 예: '서울대치초등학교 내일 3학년 2반 시간표 알려줘' 날짜는 YYYY-MM-DD 형식입니다.",
+    "우리 아이 학교 서비스는 학년/반 시간표를 조회합니다. 학교명이나 학교코드가 없으면 먼저 학교를 확인하세요. 예: '서울대치초등학교 3학년 2반 2026-07-10 시간표 알려줘' 주말과 방학에는 시간표가 없을 수 있습니다.",
     {
       office_code: z.string(),
       school_code: z.string(),

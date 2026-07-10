@@ -209,9 +209,10 @@ function extractRows(endpoint: string, data: unknown) {
   return rowBlock?.row ?? [];
 }
 
-function getTimetableEndpoint(schoolType: string) {
-  if (schoolType.includes("초")) return "elsTimetable";
-  if (schoolType.includes("중")) return "misTimetable";
+export function getTimetableEndpoint(schoolType: string) {
+  const normalized = schoolType.trim().toLowerCase();
+  if (normalized.includes("초") || normalized === "elementary") return "elsTimetable";
+  if (normalized.includes("중") || normalized === "middle") return "misTimetable";
   return "hisTimetable";
 }
 

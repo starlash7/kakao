@@ -104,13 +104,13 @@ const tools = [
       idempotentHint: true,
       openWorldHint: true,
     },
-    description: "우리 아이 학교 서비스는 학년/반 시간표를 조회합니다. 학교명이나 학교코드가 없으면 먼저 학교를 확인하세요. 예: '서울대치초등학교 내일 3학년 2반 시간표 알려줘' 날짜는 YYYY-MM-DD 형식입니다.",
+    description: "우리 아이 학교 서비스는 학년/반 시간표를 조회합니다. 학교명이나 학교코드가 없으면 먼저 학교를 확인하세요. 예: '서울대치초등학교 3학년 2반 2026-07-10 시간표 알려줘' 주말과 방학에는 시간표가 없을 수 있습니다.",
     inputSchema: {
       type: "object",
       properties: {
         office_code: { type: "string", description: "NEIS 교육청코드. 예: B10" },
         school_code: { type: "string", description: "NEIS 학교코드. 예: 7091380" },
-        school_type: { type: "string", description: "학교급. 초, 중, 고 또는 elementary/middle/high" },
+        school_type: { type: "string", description: "학교급. search_school 결과의 초등학교, 중학교, 고등학교 또는 elementary/middle/high" },
         grade: { type: "string", description: "학년. 예: 3" },
         class_name: { type: "string", description: "반. 예: 2" },
         date: { type: "string", description: "시간표 조회 날짜. YYYY-MM-DD 형식" },
@@ -324,7 +324,11 @@ function formatSchedules(schedules, keyword) {
 }
 
 function formatTimetable(items, date, grade, className) {
-  if (items.length === 0) return "해당 날짜의 시간표 정보가 없습니다.";
+  if (items.length === 0) {
+    const isoDate = toIsoDate(date);
+    if (isWeekendYmd(date)) return `${isoDate}은 주말이라 시간표가 없습니다. 다음 등교일을 지정해 다시 조회해주세요.`;
+    return `${isoDate} ${grade}학년 ${className}반 시간표가 NEIS에 등록되어 있지 않습니다. 방학·휴일이거나 학년·반 정보가 다를 수 있으니 확인해주세요.`;
+  }
   return [`${toIsoDate(date)} ${grade}학년 ${className}반 시간표`, ...items.map((item) => `- ${item.period}교시: ${item.subject}`)].join("\n");
 }
 
@@ -361,9 +365,16 @@ function getDateYmd(date) {
 }
 
 function getTimetableEndpoint(schoolType) {
-  if (schoolType.includes("초")) return "elsTimetable";
-  if (schoolType.includes("중")) return "misTimetable";
+  const normalized = String(schoolType ?? "").trim().toLowerCase();
+  if (normalized.includes("초") || normalized === "elementary") return "elsTimetable";
+  if (normalized.includes("중") || normalized === "middle") return "misTimetable";
   return "hisTimetable";
+}
+
+function isWeekendYmd(ymd) {
+  const date = new Date(Date.UTC(Number(ymd.slice(0, 4)), Number(ymd.slice(4, 6)) - 1, Number(ymd.slice(6, 8))));
+  const day = date.getUTCDay();
+  return day === 0 || day === 6;
 }
 
 function cleanDishNames(text) {

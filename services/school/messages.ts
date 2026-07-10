@@ -57,7 +57,11 @@ export function formatSchedules(schedules: ScheduleInfo[], keyword?: string) {
 
 export function formatTimetable(items: TimetableInfo[], date: string, grade: string, className: string) {
   if (items.length === 0) {
-    return "해당 날짜의 시간표 정보가 없습니다.";
+    const isoDate = toIsoDate(date);
+    if (isWeekendYmd(date)) {
+      return `${isoDate}은 주말이라 시간표가 없습니다. 다음 등교일을 지정해 다시 조회해주세요.`;
+    }
+    return `${isoDate} ${grade}학년 ${className}반 시간표가 NEIS에 등록되어 있지 않습니다. 방학·휴일이거나 학년·반 정보가 다를 수 있으니 확인해주세요.`;
   }
 
   return [
@@ -71,4 +75,10 @@ export function formatNeisError(error: unknown) {
     return NEIS_KEY_MESSAGE;
   }
   return "나이스 서버 응답을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.";
+}
+
+function isWeekendYmd(ymd: string) {
+  const date = new Date(Date.UTC(Number(ymd.slice(0, 4)), Number(ymd.slice(4, 6)) - 1, Number(ymd.slice(6, 8))));
+  const day = date.getUTCDay();
+  return day === 0 || day === 6;
 }

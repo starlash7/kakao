@@ -40,13 +40,13 @@ PAT: 비워둠
 | 서비스 | 서버 이름 | Dockerfile |
 | --- | --- | --- |
 | 연차 마법사 | `annual-leave-mcp-v6` | `Dockerfile` 또는 `Dockerfile.annual-leave` |
-| 우리 아이 학교 | `school-life-mcp-v4` | `Dockerfile.school` |
+| 우리 아이 학교 | `school-life-mcp-v5` | `Dockerfile.school` |
 
 현재 배포된 MCP Endpoint:
 
 ```text
 연차 마법사: https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp
-우리 아이 학교: https://school-life-mcp-v4.playmcp-endpoint.kakaocloud.io/mcp
+우리 아이 학교: v5 배포 후 Endpoint URL을 입력
 ```
 
 학교 MCP는 NEIS 인증키 없이도 기본 조회가 됩니다. 더 안정적인 운영이 필요하면 서버 설정에서 아래 환경변수를 추가할 수 있습니다.
@@ -101,13 +101,12 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 | MCP 이름 | `연차 마법사` | `우리 아이 학교` |
 | MCP 식별자 | `leaveWizard` | `schoolLife` |
 | 인증 방식 | 인증 사용하지 않음 | 인증 사용하지 않음 |
-| MCP Endpoint | `https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp` | `https://school-life-mcp-v4.playmcp-endpoint.kakaocloud.io/mcp` |
+| MCP Endpoint | `https://annual-leave-mcp-v6.playmcp-endpoint.kakaocloud.io/mcp` | v5 배포 후 Endpoint URL 입력 |
 
 현재 상태:
 
 - `연차 마법사`: KakaoCloud `annual-leave-mcp-v6` Active, PlayMCP tool call 테스트 성공
-- `우리 아이 학교`: KakaoCloud `school-life-mcp-v4` 심사 중
-- `우리 아이 학교`: 학교명 fallback과 지역명 alias 보정 추가. `school-life-mcp-v4` 재빌드 후 재심사 요청합니다.
+- `우리 아이 학교`: `school-life-mcp-v4` 심사 반려. 영어 학교급 매핑과 주말 안내를 보정한 `school-life-mcp-v5`를 배포 후 재심사합니다.
 - 반려 사유였던 tool `annotations`, description 내 서비스명 포함 여부, 대화 예시 입력은 `tools/list`/`tools/call` 응답으로 확인합니다.
 - 심사 승인 후 공개 상태를 `전체 공개`로 변경하고 비즈니스폼을 제출해야 합니다.
 
@@ -134,7 +133,7 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 - 10월에 연차 3개 쓰면 최대 며칠 쉬어?
 - 서울대치초등학교 오늘 급식 뭐야?
 - 서울대치초등학교 학교코드 찾아줘
-- 서울대치초등학교 내일 3학년 2반 시간표 알려줘
+- 서울대치초등학교 3학년 2반 2026년 7월 10일 시간표 알려줘
 
 비즈니스폼 소개문:
 
