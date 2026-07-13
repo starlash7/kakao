@@ -105,10 +105,10 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 
 현재 상태:
 
-- `연차 마법사`: KakaoCloud `annual-leave-mcp-v6` Active, PlayMCP tool call 테스트 성공
-- `우리 아이 학교`: `school-life-mcp-v4` 반려 사유를 보정한 `school-life-mcp-v5` Active, PlayMCP 재심사 요청 완료
+- `연차 마법사`: KakaoCloud `annual-leave-mcp-v6` Active, PlayMCP 심사 완료 및 전체 공개
+- `우리 아이 학교`: `school-life-mcp-v4` 반려 사유를 보정한 `school-life-mcp-v5` Active, PlayMCP 심사 완료 및 전체 공개
 - 반려 사유였던 tool `annotations`, description 내 서비스명 포함 여부, 대화 예시 입력은 `tools/list`/`tools/call` 응답으로 확인합니다.
-- 심사 승인 후 공개 상태를 `전체 공개`로 변경하고 비즈니스폼을 제출해야 합니다.
+- AGENTIC PLAYER 10 비즈니스폼을 두 서비스로 제출했습니다.
 
 검증한 PlayMCP 질문:
 
@@ -127,7 +127,7 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 나이스 교육정보를 기반으로 학교 급식, 학사일정, 시간표를 조회하는 생활형 MCP입니다. 학교명으로 학교코드를 찾고 오늘 급식, 시험 일정, 학년·반 시간표를 확인할 수 있습니다.
 ```
 
-재심사용 스타터 질문:
+최종 서비스 예시 질문:
 
 - 올해 남은 연차 3개로 최장 연휴 만들어줘
 - 10월에 연차 3개 쓰면 최대 며칠 쉬어?
@@ -137,4 +137,4 @@ PlayMCP에 등록할 MCP Endpoint는 health URL이 아니라 아래 형식입니
 
 비즈니스폼 소개문:
 
-> 카톡에서 바로 쓰는 생활형 MCP 2종입니다. 연차 마법사는 최장 연휴를 계산하고, 우리 아이 학교는 나이스 기반 급식·일정·시간표를 조회합니다.
+> 직장인은 휴가 계획을 위해 달력과 공휴일을 대조하고, 학부모·학생은 급식·일정·시간표를 여러 곳에서 확인해야 합니다. 이런 반복적인 생활 불편을 카카오톡 안에서 한 번의 질문으로 확인하고 해결하고 싶어 연차 마법사와 우리 아이 학교를 만들었습니다.
